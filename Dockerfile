@@ -4,6 +4,7 @@ RUN apt update
 RUN apt install -y \
     git \
     curl \
+    wget \
     zsh \
     nano \
     supervisor \
@@ -11,7 +12,12 @@ RUN apt install -y \
     php7.0 \
     php7.0-fpm \
     php7.0-cli \
-    wget
+    php7.0-mysql \
+    php7.0-pgsql \
+    php7.0-mcrypt \
+    php7.0-mbstring \
+    php7.0-gd \
+    php7.0-xml
 
 RUN mkdir /run/php/
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
