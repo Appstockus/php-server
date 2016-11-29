@@ -43,5 +43,6 @@ RUN echo "autorestart = true" >> /etc/supervisor/supervisord.conf
 # Install Zsh
 RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 RUN sed -i "s/robbyrussell/af-magic/" ~/.zshrc
+RUN echo TERM=xterm >> /root/.zshrc
 
 CMD ["/usr/bin/supervisord"]
