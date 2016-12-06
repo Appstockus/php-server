@@ -22,6 +22,10 @@ RUN apt install -y \
     php7.0-gd \
     php7.0-xml
 
+RUN apt autoremove -y && \
+    apt clean && \
+    apt autoclean
+
 RUN mkdir /run/php/
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN sed -i "s/user = www-data/user = root/" /etc/php/7.0/fpm/pool.d/www.conf
