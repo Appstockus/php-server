@@ -4,6 +4,7 @@ RUN apt update
 RUN apt install -y \
     git \
     curl \
+    cron \
     wget \
     zsh \
     nano \
@@ -43,6 +44,11 @@ RUN echo "autorestart = true" >> /etc/supervisor/supervisord.conf
 
 RUN echo "[program:nginx]" >> /etc/supervisor/supervisord.conf
 RUN echo "command = /usr/sbin/nginx" >> /etc/supervisor/supervisord.conf
+RUN echo "autostart = true" >> /etc/supervisor/supervisord.conf
+RUN echo "autorestart = true" >> /etc/supervisor/supervisord.conf
+
+RUN echo "[program:cron]" >> /etc/supervisor/supervisord.conf
+RUN echo "command = cron -f" >> /etc/supervisor/supervisord.conf
 RUN echo "autostart = true" >> /etc/supervisor/supervisord.conf
 RUN echo "autorestart = true" >> /etc/supervisor/supervisord.conf
 
