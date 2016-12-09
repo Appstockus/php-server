@@ -61,4 +61,7 @@ RUN echo TERM=xterm >> /root/.zshrc
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN chown -R root:root /etc/cron.d
+RUN chmod -R 0644 /etc/cron.d
+
 CMD ["/usr/bin/supervisord"]
