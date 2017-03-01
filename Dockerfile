@@ -31,6 +31,7 @@ RUN mkdir /run/php/
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN sed -i "s/display_errors = On/display_errors = Off/" /etc/php/7.0/fpm/php.ini
 RUN sed -i "s/post_max_size = 8M/post_max_size = 100M/" /etc/php/7.0/fpm/php.ini
+RUN sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 100M/" /etc/php/7.0/fpm/php.ini
 RUN sed -i "s/user = www-data/user = root/" /etc/php/7.0/fpm/pool.d/www.conf
 RUN sed -i "s/group = www-data/group = root/" /etc/php/7.0/fpm/pool.d/www.conf
 
