@@ -5,7 +5,7 @@ Basic useful feature list:
  * supervisor
  * cron
  * [composer](https://getcomposer.org/)
- * [certbot](https://certbot.eff.org/)
+ * [certbot-auto](https://certbot.eff.org/)
  * [zsh](https://github.com/robbyrussell/oh-my-zsh)
 
 
