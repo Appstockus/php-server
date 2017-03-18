@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
-RUN apt update
-RUN apt install -y \
+RUN apt-get update
+RUN apt-get install -y \
     git \
     curl \
     cron \
@@ -23,9 +23,9 @@ RUN apt install -y \
     php7.0-gd \
     php7.0-xml
 
-RUN apt autoremove -y && \
-    apt clean && \
-    apt autoclean
+RUN apt-get autoremove -y && \
+    apt-get clean && \
+    apt-get autoclean
 
 RUN mkdir /run/php/
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
@@ -63,6 +63,11 @@ RUN echo TERM=xterm >> /root/.zshrc
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Add certbot
+# https://certbot.eff.org/
+RUN wget -P /usr/sbin/ https://dl.eff.org/certbot-auto
+RUN chmod a+x /usr/sbin/certbot-auto
 
 RUN chown -R root:root /etc/cron.d
 RUN chmod -R 0644 /etc/cron.d
