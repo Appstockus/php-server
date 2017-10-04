@@ -1,4 +1,4 @@
-# nginx + php7.0-fpm
+# nginx + php7.1-fpm
 
 Basic useful feature list:
 
@@ -15,7 +15,7 @@ Basic useful feature list:
 
 ```yaml
 php-server:
-  image: igontarev/php-server
+  image: leemp/phpserver
   ports:
     - "80:80"
     - "443:443"
