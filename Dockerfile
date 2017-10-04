@@ -1,10 +1,9 @@
 FROM ubuntu:16.04
 
 RUN apt-get update
-RUN export LANG=C.UTF-8
 RUN apt-get install -y software-properties-common
 RUN apt-get install -y python-software-properties
-RUN add-apt-repository -y ppa:ondrej/php
+RUN export LANG=C.UTF-8 && add-apt-repository -y ppa:ondrej/php
 RUN apt-get update -y
 RUN apt-get install -y \
     git \
