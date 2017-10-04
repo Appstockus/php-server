@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 RUN apt update
 RUN export LANG=C.UTF-8
 RUN apt install -y software-properties-common
-RUN add-apt-repository ppa:ondrej/php
+RUN export LANG=C.UTF-8 && add-apt-repository -y ppa:ondrej/php
 RUN apt update
 RUN apt install -y \
     git \
