@@ -1,10 +1,10 @@
 FROM ubuntu:16.04
 
 RUN apt-get update
-apt-get install -y python-software-properties
-apt-get install -y software-properties-common
-add-apt-repository -y ppa:ondrej/php
-apt-get update -y
+RUN apt-get install -y python-software-properties
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository -y ppa:ondrej/php
+RUN apt-get update -y
 RUN apt-get install -y \
     git \
     curl \
