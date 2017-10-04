@@ -15,7 +15,7 @@ Basic useful feature list:
 
 ```yaml
 php-server:
-  image: igontarev/php-server
+  image: leemp/php-server:7.0
   ports:
     - "80:80"
     - "443:443"
