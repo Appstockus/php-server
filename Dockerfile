@@ -8,7 +8,6 @@ RUN apt update
 RUN apt install -y \
     git \
     curl \
-    cron \
     wget \
     zsh \
     nano \
@@ -31,10 +30,6 @@ RUN apt autoremove -y && \
     apt clean && \
     apt autoclean
 
-RUN apt-get autoremove -y && \
-    apt-get clean && \
-    apt-get autoclean
-
 RUN mkdir /run/php/
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN sed -i "s/display_errors = On/display_errors = Off/" /etc/php/5.6/fpm/php.ini
@@ -56,11 +51,6 @@ RUN echo "command = /usr/sbin/nginx" >> /etc/supervisor/supervisord.conf
 RUN echo "autostart = true" >> /etc/supervisor/supervisord.conf
 RUN echo "autorestart = true" >> /etc/supervisor/supervisord.conf
 
-RUN echo "[program:cron]" >> /etc/supervisor/supervisord.conf
-RUN echo "command = cron -f" >> /etc/supervisor/supervisord.conf
-RUN echo "autostart = true" >> /etc/supervisor/supervisord.conf
-RUN echo "autorestart = true" >> /etc/supervisor/supervisord.conf
-
 
 # Install Zsh
 RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
@@ -69,13 +59,5 @@ RUN echo TERM=xterm >> /root/.zshrc
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Add certbot
-# https://certbot.eff.org/
-RUN wget -P /usr/sbin/ https://dl.eff.org/certbot-auto
-RUN chmod a+x /usr/sbin/certbot-auto
-
-RUN chown -R root:root /etc/cron.d
-RUN chmod -R 0644 /etc/cron.d
 
 CMD ["/usr/bin/supervisord"]
