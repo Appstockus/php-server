@@ -1,8 +1,8 @@
 FROM ubuntu:16.04
 
 RUN apt update
+RUN export LANG=C.UTF-8
 RUN apt install -y software-properties-common
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C
 RUN add-apt-repository ppa:ondrej/php
 RUN apt update
 RUN apt install -y \
