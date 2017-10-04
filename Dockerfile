@@ -21,7 +21,8 @@ RUN apt-get install -y \
     php7.0-mcrypt \
     php7.0-mbstring \
     php7.0-gd \
-    php7.0-xml
+    php7.0-xml \
+    mysql-client
 
 RUN apt-get autoremove -y && \
     apt-get clean && \
