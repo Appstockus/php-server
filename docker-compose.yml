@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  php-server:
+    image: igontarev/php-server
+    ports:
+      - "80:80"
+    volumes:
+      - ./example/www:/var/www
+      - ./example/conf:/etc/nginx/sites-enabled

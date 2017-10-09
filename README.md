@@ -1,6 +1,6 @@
-# nginx + php7.0-fpm
+# nginx + php7.1-fpm
 
-Basic useful feature list:
+### Basic useful feature list:
 
  * supervisor
  * cron
@@ -8,10 +8,19 @@ Basic useful feature list:
  * [certbot-auto](https://certbot.eff.org/)
  * [zsh](https://github.com/robbyrussell/oh-my-zsh)
 
+### How to run example
 
-## Example
+```bash
+git clone git@github.com:iGontarev/php-server.git
+cd php-server
+docker-compose up -d
+```
 
-*docker-compose.yml*:
+Open [https://localhost](https://localhost) in your browser
+
+![phpinfo](http://storage7.static.itmages.com/i/17/1009/h_1507569720_7349817_3890ca183b.png)
+
+#### Example *docker-compose.yml*
 
 ```yaml
 php-server:
