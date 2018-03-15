@@ -15,7 +15,7 @@ Basic useful feature list:
 
 ```yaml
 php-server:
-  image: leemp/phpserver
+  image: leemp/php-server:latest
   ports:
     - "80:80"
     - "443:443"
