@@ -1,10 +1,6 @@
-FROM ubuntu:16.04
+FROM ubuntu:17.10
 
 RUN apt-get update
-RUN apt-get install -y software-properties-common
-RUN apt-get install -y python-software-properties
-RUN export LANG=C.UTF-8 && add-apt-repository -y ppa:ondrej/php
-RUN apt-get update -y
 RUN apt-get install -y \
     git \
     curl \
@@ -25,8 +21,7 @@ RUN apt-get install -y \
     php7.1-mcrypt \
     php7.1-mbstring \
     php7.1-gd \
-    php7.1-xml \
-    mysql-client
+    php7.1-xml
 
 RUN apt-get autoremove -y && \
     apt-get clean && \
@@ -78,3 +73,7 @@ RUN chown -R root:root /etc/cron.d
 RUN chmod -R 0644 /etc/cron.d
 
 CMD ["/usr/bin/supervisord"]
+
+# Install GS to downgrade pdf files
+RUN apt-get update && apt-get -y install ghostscript && apt-get clean
+RUN apt-get update && apt-get install nodejs -y && apt-get update -y && apt-get install npm -y && npm i -g n && n stable && npm i -g pm2
