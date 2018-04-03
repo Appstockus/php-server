@@ -24,7 +24,8 @@ RUN apt install -y \
     php5.6-mcrypt \
     php5.6-mbstring \
     php5.6-gd \
-    php5.6-xml
+    php5.6-xml \
+    php5.6-xdebug
 
 RUN apt autoremove -y && \
     apt clean && \
@@ -51,6 +52,14 @@ RUN echo "command = /usr/sbin/nginx" >> /etc/supervisor/supervisord.conf
 RUN echo "autostart = true" >> /etc/supervisor/supervisord.conf
 RUN echo "autorestart = true" >> /etc/supervisor/supervisord.conf
 
+#Xdebug
+#RUN echo "zend_extension=xdebug.so" >> /etc/php/5.6/mods-available/xdebug.ini
+RUN echo "xdebug.remote_enable = 1" >> /etc/php/5.6/mods-available/xdebug.ini
+RUN echo "xdebug.remote_port = 9000" >> /etc/php/5.6/mods-available/xdebug.ini
+RUN echo "xdebug.idekey = PHPSTORM" >> /etc/php/5.6/mods-available/xdebug.ini
+RUN echo "xdebug.show_error_trace = 1" >> /etc/php/5.6/mods-available/xdebug.ini
+RUN echo "xdebug.remote_autostart = 0" >> /etc/php/5.6/mods-available/xdebug.ini
+RUN echo "xdebug.file_link_format = phpstorm://open?%f:%l" >> /etc/php/5.6/mods-available/xdebug.ini
 
 # Install Zsh
 RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
