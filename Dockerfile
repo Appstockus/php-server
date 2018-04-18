@@ -64,7 +64,7 @@ RUN echo "xdebug.file_link_format = phpstorm://open?%f:%l" >> /etc/php/5.6/mods-
 # Install Zsh
 RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 RUN sed -i "s/robbyrussell/af-magic/" ~/.zshrc
-RUN echo TERM=xterm >> /root/.zshrc
+RUN echo TERM=xterm >> /root/.zshrc 
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
