@@ -64,9 +64,13 @@ RUN echo "xdebug.file_link_format = phpstorm://open?%f:%l" >> /etc/php/5.6/mods-
 # Install Zsh
 RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 RUN sed -i "s/robbyrussell/af-magic/" ~/.zshrc
-RUN echo TERM=xterm >> /root/.zshrc 
+RUN echo TERM=xterm >> /root/.zshrc
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 CMD ["/usr/bin/supervisord"]
+
+# Install GS to downgrade pdf files
+RUN apt-get update && apt-get -y install ghostscript && apt-get clean
+RUN apt-get update && apt-get install nodejs -y && apt-get update -y && apt-get install npm -y && npm i -g n && n stable
