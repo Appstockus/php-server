@@ -36,6 +36,7 @@ RUN sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 100M/" /etc/php/7.1
 RUN sed -i "s/user = www-data/user = root/" /etc/php/7.1/fpm/pool.d/www.conf
 RUN sed -i "s/group = www-data/group = root/" /etc/php/7.1/fpm/pool.d/www.conf
 RUN sed -i "s/;clear_env = no/clear_env = no/" /etc/php/7.1/fpm/pool.d/www.conf
+RUN sed -i "s/memory_limit = 128M/memory_limit = 256M/" /etc/php/7.1/fpm/php.ini
 
 # Supervisor conf
 RUN echo "[supervisord]" >> /etc/supervisor/supervisord.conf
