@@ -4,6 +4,9 @@ RUN apt-get update
 RUN apt-get install -y software-properties-common
 RUN apt-add-repository ppa:ondrej/php
 RUN apt-get update
+
+ARG DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get install -y \
     git \
     curl \
