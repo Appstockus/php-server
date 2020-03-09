@@ -36,6 +36,7 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN sed -i "s/display_errors = On/display_errors = Off/" /etc/php/5.6/fpm/php.ini
 RUN sed -i "s/user = www-data/user = root/" /etc/php/5.6/fpm/pool.d/www.conf
 RUN sed -i "s/group = www-data/group = root/" /etc/php/5.6/fpm/pool.d/www.conf
+RUN sed -i "s/;clear_env = no/clear_env = no/" /etc/php/5.6/fpm/pool.d/www.conf
 
 # Supervisor conf
 RUN echo "[supervisord]" >> /etc/supervisor/supervisord.conf
