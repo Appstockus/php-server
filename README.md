@@ -1,4 +1,4 @@
-# nginx + php7.1-fpm
+# nginx + php7.4-fpm
 
 ### Basic useful feature list:
 
@@ -11,7 +11,7 @@
 ### How to run example
 
 ```bash
-git clone git@github.com:iGontarev/php-server.git
+git clone git@github.com:AppStockus/php-server.git
 cd php-server
 docker-compose up -d
 ```
