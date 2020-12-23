@@ -13,18 +13,18 @@ RUN apt-get update \
     nano \
     supervisor \
     nginx \
-    php7.1 \
-    php7.1-fpm \
-    php7.1-cli \
-    php7.1-curl \
-    php7.1-zip \
-    php7.1-json \
-    php7.1-mysql \
-    php7.1-pgsql \
-    php7.1-mcrypt \
-    php7.1-mbstring \
-    php7.1-gd \
-    php7.1-xml
+    php7.4 \
+    php7.4-fpm \
+    php7.4-cli \
+    php7.4-curl \
+    php7.4-zip \
+    php7.4-json \
+    php7.4-mysql \
+    php7.4-pgsql \
+    # php7.4-mcrypt \
+    php7.4-mbstring \
+    php7.4-gd \
+    php7.4-xml
 
 RUN apt-get autoremove -y && \
     apt-get clean && \
@@ -32,18 +32,18 @@ RUN apt-get autoremove -y && \
 
 RUN mkdir /run/php \
     && echo "daemon off;" >> /etc/nginx/nginx.conf \
-    && sed -i "s/display_errors = On/display_errors = Off/" /etc/php/7.1/fpm/php.ini \
-    && sed -i "s/post_max_size = 8M/post_max_size = 100M/" /etc/php/7.1/fpm/php.ini \
-    && sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 100M/" /etc/php/7.1/fpm/php.ini \
-    && sed -i "s/user = www-data/user = root/" /etc/php/7.1/fpm/pool.d/www.conf \
-    && sed -i "s/group = www-data/group = root/" /etc/php/7.1/fpm/pool.d/www.conf
+    && sed -i "s/display_errors = On/display_errors = Off/" /etc/php/7.4/fpm/php.ini \
+    && sed -i "s/post_max_size = 8M/post_max_size = 100M/" /etc/php/7.4/fpm/php.ini \
+    && sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 100M/" /etc/php/7.4/fpm/php.ini \
+    && sed -i "s/user = www-data/user = root/" /etc/php/7.4/fpm/pool.d/www.conf \
+    && sed -i "s/group = www-data/group = root/" /etc/php/7.4/fpm/pool.d/www.conf
 
 # Supervisor conf
 RUN echo "[supervisord]" >> /etc/supervisor/supervisord.conf \
     && echo "nodaemon = true" >> /etc/supervisor/supervisord.conf \
     && echo "user = root" >> /etc/supervisor/supervisord.conf \
-    && echo "[program:php-fpm7.1]" >> /etc/supervisor/supervisord.conf \
-    && echo "command = /usr/sbin/php-fpm7.1 -FR" >> /etc/supervisor/supervisord.conf \
+    && echo "[program:php-fpm7.4]" >> /etc/supervisor/supervisord.conf \
+    && echo "command = /usr/sbin/php-fpm7.4 -FR" >> /etc/supervisor/supervisord.conf \
     && echo "autostart = true" >> /etc/supervisor/supervisord.conf \
     && echo "autorestart = true" >> /etc/supervisor/supervisord.conf \
     && echo "[program:nginx]" >> /etc/supervisor/supervisord.conf \
