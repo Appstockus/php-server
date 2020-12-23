@@ -24,7 +24,7 @@ Open [https://localhost](https://localhost) in your browser
 
 ```yaml
 php-server:
-  image: igontarev/php-server
+  image: leemp/php-server:latest
   ports:
     - "80:80"
     - "443:443"
