@@ -1,62 +1,59 @@
-FROM ubuntu:18.04
+FROM alpine:edge
 
-RUN apt-get update \
-    && apt-get install software-properties-common -y \
-    && LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php \
-    && apt-get update \
-    && apt-get install -y \
+RUN apk update \
+    && apk update \
+    && apk add  \
     git \
     curl \
-    cron \
     wget \
+    bash \
+    lcms2-dev \
     zsh \
     nano \
+    dpkg \
     supervisor \
     nginx \
+    libpng-dev \
+    php7=7.4.13-r1 \
+    php7-fpm=7.4.13-r1 \
+    php7-curl=7.4.13-r1 \
+    php7-zip=7.4.13-r1 \
+    php7-json=7.4.13-r1 \
+    php7-pgsql=7.4.13-r1 \
+    php7-phar=7.4.13-r1 \
+    php7-openssl=7.4.13-r1 \
+    php7-mbstring=7.4.13-r1 \
+    php7-gd=7.4.13-r1 \
+    php7-xml=7.4.13-r1
 
-    php7.4 \
-    php7.4-fpm \
-    php7.4-cli \
-    php7.4-curl \
-    php7.4-zip \
-    php7.4-json \
-    php7.4-mysql \
-    php7.4-pgsql \
-    # php7.4-mcrypt \
-    php7.4-mbstring \
-    php7.4-gd \
-    php7.4-xml
 
-
-RUN apt-get autoremove -y && \
-    apt-get clean && \
-    apt-get autoclean
+RUN apk del
 
 
 RUN mkdir /run/php \
     && echo "daemon off;" >> /etc/nginx/nginx.conf \
-    && sed -i "s/display_errors = On/display_errors = Off/" /etc/php/7.4/fpm/php.ini \
-    && sed -i "s/post_max_size = 8M/post_max_size = 100M/" /etc/php/7.4/fpm/php.ini \
-    && sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 100M/" /etc/php/7.4/fpm/php.ini \
-    && sed -i "s/user = www-data/user = root/" /etc/php/7.4/fpm/pool.d/www.conf \
-    && sed -i "s/group = www-data/group = root/" /etc/php/7.4/fpm/pool.d/www.conf
+    && sed -i "s/display_errors = On/display_errors = Off/" /etc/php7/php.ini \
+    && sed -i "s/post_max_size = 8M/post_max_size = 100M/" /etc/php7/php.ini \
+    && sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 100M/" /etc/php7/php.ini \
+    && sed -i "s/user = www-data/user = root/" /etc/php7/php-fpm.d/www.conf \
+    && sed -i "s/group = www-data/group = root/" /etc/php7/php-fpm.d/www.conf
 
 # Supervisor conf
-RUN echo "[supervisord]" >> /etc/supervisor/supervisord.conf \
-    && echo "nodaemon = true" >> /etc/supervisor/supervisord.conf \
-    && echo "user = root" >> /etc/supervisor/supervisord.conf \
-    && echo "[program:php-fpm7.4]" >> /etc/supervisor/supervisord.conf \
-    && echo "command = /usr/sbin/php-fpm7.4 -FR" >> /etc/supervisor/supervisord.conf \
-    && echo "autostart = true" >> /etc/supervisor/supervisord.conf \
-    && echo "autorestart = true" >> /etc/supervisor/supervisord.conf \
-    && echo "[program:nginx]" >> /etc/supervisor/supervisord.conf \
-    && echo "command = /usr/sbin/nginx" >> /etc/supervisor/supervisord.conf \
-    && echo "autostart = true" >> /etc/supervisor/supervisord.conf \
-    && echo "autorestart = true" >> /etc/supervisor/supervisord.conf \
-    && echo "[program:cron]" >> /etc/supervisor/supervisord.conf \
-    && echo "command = cron -f" >> /etc/supervisor/supervisord.conf \
-    && echo "autostart = true" >> /etc/supervisor/supervisord.conf \
-    && echo "autorestart = true" >> /etc/supervisor/supervisord.conf
+RUN echo "[supervisord]" >> /etc/supervisord.conf \
+    && echo "nodaemon = true" >> /etc/supervisord.conf \
+    && echo "user = root" >> /etc/supervisord.conf \
+    && echo "[program:php-fpm7.4]" >> /etc/supervisord.conf \
+    && echo "command = /usr/sbin/php-fpm7.4 -FR" >> /etc/supervisord.conf \
+    && echo "autostart = true" >> /etc/supervisord.conf \
+    && echo "autorestart = true" >> /etc/supervisord.conf \
+    && echo "[program:nginx]" >> /etc/supervisord.conf \
+    && echo "command = /usr/sbin/nginx" >> /etc/supervisord.conf \
+    && echo "autostart = true" >> /etc/supervisord.conf \
+    && echo "autorestart = true" >> /etc/supervisord.conf \
+    && echo "[program:cron]" >> /etc/supervisord.conf \
+    && echo "command = cron -f" >> /etc/supervisord.conf \
+    && echo "autostart = true" >> /etc/supervisord.conf \
+    && echo "autorestart = true" >> /etc/supervisord.conf
 
 
 
@@ -66,21 +63,24 @@ RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && cp ~/.
     && echo TERM=xterm >> /root/.zshrc
 
 # Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer 
+
 
 # Add certbot
 # https://certbot.eff.org/
 RUN wget -P /usr/sbin/ https://dl.eff.org/certbot-auto \
     && chmod a+x /usr/sbin/certbot-auto
 
-RUN chown -R root:root /etc/cron.d && chmod -R 0644 /etc/cron.d
+RUN chown -R root:root /etc/crontabs && chmod -R 0644 /etc/crontabs
 
 CMD ["/usr/bin/supervisord"]
 
-RUN wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && dpkg -i /tmp/libpng12.deb && rm /tmp/libpng12.deb
-
-RUN wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb  && dpkg -i /tmp/libpng12.deb && rm /tmp/libpng12.deb
 
 # Install GS to downgrade pdf files
-RUN apt-get update && apt-get -y install ghostscript && apt-get clean
-RUN apt-get update && apt-get install nodejs -y && apt-get update -y && apt-get install npm -y && npm i -g n && n stable && npm i -g pm2 && npm install -g pngquant-bin
+RUN apk update && apk add ghostscript 
+RUN apk update && apk add nodejs 
+RUN apk update 
+RUN apk add npm 
+RUN npm i -g n 
+RUN n stable
+
