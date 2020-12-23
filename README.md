@@ -1,4 +1,4 @@
-# nginx + php7.1-fpm
+# nginx + php7.4-fpm
 
 ### Basic useful feature list:
 
