@@ -11,7 +11,7 @@
 ### How to run example
 
 ```bash
-git clone git@github.com:iGontarev/php-server.git
+git clone git@github.com:AppStockus/php-server.git
 cd php-server
 docker-compose up -d
 ```
@@ -24,7 +24,7 @@ Open [https://localhost](https://localhost) in your browser
 
 ```yaml
 php-server:
-  image: igontarev/php-server
+  image: leemp/php-server:latest
   ports:
     - "80:80"
     - "443:443"
