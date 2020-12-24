@@ -24,7 +24,11 @@ RUN apk update \
     php7-openssl=7.4.13-r1 \
     php7-mbstring=7.4.13-r1 \
     php7-gd=7.4.13-r1 \
-    php7-xml=7.4.13-r1
+    php7-xml=7.4.13-r1 \
+    php7-simplexml=7.4.13-r1 \
+    php7-dom=7.4.13-r1 \
+    php7-xmlwriter=7.4.13-r1 \
+    php7-tokenizer=7.4.13-r1
 
 
 RUN apk del
