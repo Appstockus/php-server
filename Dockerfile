@@ -18,6 +18,7 @@ RUN apt-get update \
         cron \
         supervisor \
         nginx \
+        nodejs npm \
         # PHP
         php7.1 \
         php7.1-fpm \
