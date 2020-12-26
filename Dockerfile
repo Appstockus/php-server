@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-stretch
+FROM ubuntu:18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
