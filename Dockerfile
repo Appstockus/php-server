@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM php:7.1-fpm-stretch
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -6,7 +6,7 @@ ADD http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ub
 
 ADD https://dl.eff.org/certbot-auto /usr/sbin/certbot-auto
 
-ADD https://getcomposer.org/installer /composer-installer.php
+ADD https://getcomposer.org/download/2.0.8/composer.phar /usr/local/bin/composer
 
 RUN apt-get update \
     && apt-get install -y software-properties-common \
@@ -40,9 +40,9 @@ RUN apt-get update \
     && apt-get autoremove -y \
     && apt-get clean \
     && apt-get autoclean \
-    # Composer
-    && php /composer-installer.php --install-dir=/usr/local/bin --filename=composer \
-    && rm /composer-installer.php
+    # Post Install
+    && chmod a+x /usr/local/bin/composer \
+    && chmod a+x /usr/sbin/certbot-auto
 
 # Nginx PHP-FPM
 RUN mkdir /run/php/ \
@@ -71,7 +71,6 @@ RUN mkdir /run/php/ \
     && echo "autostart = true" >> /etc/supervisor/supervisord.conf \
     && echo "autorestart = true" >> /etc/supervisor/supervisord.conf \
     # Fix fs
-    && chmod a+x /usr/sbin/certbot-auto \
     && chown -R root:root /etc/cron.d \
     && chmod -R 0644 /etc/cron.d
 
