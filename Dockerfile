@@ -42,7 +42,9 @@ RUN apt-get update \
     && apt-get autoclean \
     # Post Install
     && chmod a+x /usr/local/bin/composer \
-    && chmod a+x /usr/sbin/certbot-auto
+    && chmod a+x /usr/sbin/certbot-auto \
+    && chown -R root:root /etc/cron.d \
+    && chmod -R 0644 /etc/cron.d
 
 # Nginx PHP-FPM
 RUN mkdir /run/php/ \
@@ -69,9 +71,6 @@ RUN mkdir /run/php/ \
     && echo "[program:cron]" >> /etc/supervisor/supervisord.conf \
     && echo "command = cron -f" >> /etc/supervisor/supervisord.conf \
     && echo "autostart = true" >> /etc/supervisor/supervisord.conf \
-    && echo "autorestart = true" >> /etc/supervisor/supervisord.conf \
-    # Fix fs
-    && chown -R root:root /etc/cron.d \
-    && chmod -R 0644 /etc/cron.d
+    && echo "autorestart = true" >> /etc/supervisor/supervisord.conf
 
 CMD ["/usr/bin/supervisord"]
