@@ -18,8 +18,6 @@ RUN apt-get update \
         cron \
         supervisor \
         nginx \
-        nodejs \
-        npm \
         # PHP
         php7.1 \
         php7.1-fpm \
@@ -44,11 +42,7 @@ RUN apt-get update \
     && apt-get autoclean \
     # Composer
     && php /composer-installer.php --install-dir=/usr/local/bin --filename=composer \
-    && rm /composer-installer.php \
-    # Node
-    && npm i -g n \
-    && n stable \
-    && npm install -g pngquant-bin
+    && rm /composer-installer.php
 
 # Nginx PHP-FPM
 RUN mkdir /run/php/ \
