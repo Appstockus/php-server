@@ -73,7 +73,7 @@ RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && cp ~/.
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer 
 
-COPY ./conf /etc/nginx/sites-enabled
+COPY ./conf /etc/nginx/conf.d
 COPY ./www /var/www
 COPY ./supervisor /etc/supervisor/conf.d
 
