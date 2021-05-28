@@ -24,6 +24,7 @@ RUN apk update \
     php7-tokenizer=7.4.16-r0 \
     php7-pdo_mysql=7.4.16-r0 \
     php7-session=7.4.16-r0 \
+    php7-pecl-mailparse \
     && apk del \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
