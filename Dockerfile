@@ -30,7 +30,9 @@ RUN apk update \
     php7-xmlwriter=7.4.14-r0 \
     php7-tokenizer=7.4.14-r0 \
     php7-pdo_mysql=7.4.14-r0 \
-    php7-session=7.4.14-r0
+    php7-session=7.4.14-r0 \
+    php7-pecl-mailparse
+
 
 
 RUN apk del
