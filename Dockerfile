@@ -10,22 +10,22 @@ RUN set -ex &&\
     py3-setuptools=52.0.0-r4 \
     php7=7.4.30-r0 \
     php7-fpm=7.4.30-r0 \
-    php7-curl=7.4.30-r0 \
-    php7-zip=7.4.30-r0 \
-    php7-json=7.4.30-r0 \
-    php7-pgsql=7.4.30-r0 \
-    php7-phar=7.4.30-r0 \
-    php7-openssl=7.4.30-r0 \
-    php7-mbstring=7.4.30-r0 \
-    php7-gd=7.4.30-r0 \
-    php7-xml=7.4.30-r0 \
-    php7-simplexml=7.4.30-r0 \
-    php7-dom=7.4.30-r0 \
-    php7-xmlwriter=7.4.30-r0 \
-    php7-tokenizer=7.4.30-r0 \
-    php7-pdo_mysql=7.4.30-r0 \
-    php7-session=7.4.30-r0 \
-    php7-pecl-mailparse=3.1.3-r0 \
+    php7-curl \
+    php7-zip \
+    php7-json \
+    php7-pgsql \
+    php7-phar \
+    php7-openssl \
+    php7-mbstring \
+    php7-gd \
+    php7-xml \
+    php7-simplexml \
+    php7-dom \
+    php7-xmlwriter \
+    php7-tokenizer \
+    php7-pdo_mysql \
+    php7-session \
+    php7-pecl-mailparse \
     php7-pecl-apcu \
     php7-pecl-mcrypt \
     php-fileinfo \
