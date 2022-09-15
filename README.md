@@ -1,31 +1,46 @@
-# nginx + php7.4-fpm
+# Docker - alpine + nginx + php
 
 Basic useful feature list:
 
+ * alpine (3.15)
+ * php-fpm (7.4.30)
  * supervisor
- * cron
  * [composer](https://getcomposer.org/)
- * [certbot-auto](https://certbot.eff.org/)
- * [zsh](https://github.com/robbyrussell/oh-my-zsh)
-
 
 ## Example
 
 *docker-compose.yml*:
 
 ```yaml
-php-server:
-  image: leemp/php-server:latest
+ges:
+  platform: linux/amd64
+  image: leemp/php-server:${TAG_VERSION}
+  healthcheck:
+    test: "true"
+  build:
+    context: ./apps/ges
+    args:
+      VERSION: ${TAG_VERSION}
+      COMPOSER_INSTALL_DEV: 'true'
   ports:
-    - "80:80"
-    - "443:443"
+    - "80:5000"
+  env_file: ./.env
+  environment:
+    TZ: ${TZ:-Europe/London}
+    APP_DEBUG: 'true'
+    ENV_OVERLOAD: 'true'
+  command: bash -c '(apk add tzdata && cp /usr/share/zoneinfo/$TZ /etc/localtime && date) 
+    && ([[ -z "$SKIP_INIT" ]] && (
+      cd /var/www 
+      && composer install --no-progress -v
+      && npm install 
+    ) || true)
+      && cd / && /usr/bin/supervisord'
   volumes:
-    - ./www:/var/www
-    - ./sites:/etc/nginx/sites-enabled
-    - ./logs/nginx:/var/log/nginx
-    - ./logs/php:/var/log/php
-    - ./cron:/etc/cron.d
-    - ./supervisor:/etc/supervisor/conf.d
-    - ./letsencrypt:/etc/letsencrypt
-    - ./lib/letsencrypt:/var/lib/letsencrypt
+    - ./apps/ges/www:/var/www/
+    - ./apps/ges/nginx-config:/etc/nginx/conf.d:ro
+    - ./apps/ges/logs/nginx:/var/log/nginx
+    - ./apps/ges/supervisor:/etc/supervisor.d:ro
+    - ./apps/ges/filebeat/filebeat.yml:/etc/filebeat.yml
+    - ./apps/ges/xdebug:/xdebug
 ```

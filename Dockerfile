@@ -26,6 +26,13 @@ RUN set -ex &&\
     php7-pdo_mysql=7.4.30-r0 \
     php7-session=7.4.30-r0 \
     php7-pecl-mailparse=3.1.3-r0 \
+    php7-pecl-apcu \
+    php7-pecl-mcrypt \
+    php-fileinfo \
+    php-sodium \
+    php-sockets \
+    php7-iconv \
+    php7-mysqli \
     && apk del \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
