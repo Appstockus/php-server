@@ -7,6 +7,7 @@ RUN set -ex &&\
     bash \
     supervisor \
     nginx \
+    npm \
     py3-setuptools=52.0.0-r4 \
     php7=7.4.30-r0 \
     php7-fpm=7.4.30-r0 \
