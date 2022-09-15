@@ -1,91 +1,58 @@
-FROM ubuntu:18.04
+FROM alpine:3.15
 
-RUN apt-get update
-RUN apt-get install -y software-properties-common
-RUN apt-add-repository ppa:ondrej/php
-RUN apt-get update
-
-ARG DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get install -y \
-    git \
+RUN set -ex &&\
+    apk update \
+    && apk add  --no-cache \
     curl \
-    cron \
-    wget \
-    zsh \
-    nano \
+    bash \
     supervisor \
     nginx \
-    php7.1 \
-    php7.1-fpm \
-    php7.1-cli \
-    php7.1-curl \
-    php7.1-zip \
-    php7.1-json \
-    php7.1-mysql \
-    php7.1-pgsql \
-    php7.1-mcrypt \
-    php7.1-mbstring \
-    php7.1-gd \
-    php7.1-xml \
-    php7.1-apcu
+    py3-setuptools=52.0.0-r4 \
+    php7=7.4.30-r0 \
+    php7-fpm=7.4.30-r0 \
+    php7-curl=7.4.30-r0 \
+    php7-zip=7.4.30-r0 \
+    php7-json=7.4.30-r0 \
+    php7-pgsql=7.4.30-r0 \
+    php7-phar=7.4.30-r0 \
+    php7-openssl=7.4.30-r0 \
+    php7-mbstring=7.4.30-r0 \
+    php7-gd=7.4.30-r0 \
+    php7-xml=7.4.30-r0 \
+    php7-simplexml=7.4.30-r0 \
+    php7-dom=7.4.30-r0 \
+    php7-xmlwriter=7.4.30-r0 \
+    php7-tokenizer=7.4.30-r0 \
+    php7-pdo_mysql=7.4.30-r0 \
+    php7-session=7.4.30-r0 \
+    php7-pecl-mailparse=3.1.3-r0 \
+    && apk del \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-RUN apt-get autoremove -y && \
-    apt-get clean && \
-    apt-get autoclean
-
-RUN mkdir /run/php/
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-RUN sed -i "s/display_errors = On/display_errors = Off/" /etc/php/7.1/fpm/php.ini
-RUN sed -i "s/post_max_size = 8M/post_max_size = 100M/" /etc/php/7.1/fpm/php.ini
-RUN sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 100M/" /etc/php/7.1/fpm/php.ini
-RUN sed -i "s/user = www-data/user = root/" /etc/php/7.1/fpm/pool.d/www.conf
-RUN sed -i "s/group = www-data/group = root/" /etc/php/7.1/fpm/pool.d/www.conf
-RUN sed -i "s/;clear_env = no/clear_env = no/" /etc/php/7.1/fpm/pool.d/www.conf
-
+RUN mkdir -p /run/nginx \
+    && chown -R root:root /etc/crontabs && chmod -R 0644 /etc/crontabs \
+    && mkdir /run/php \
+    && echo "daemon off;" >> /etc/nginx/nginx.conf \
+    && sed -i "s/display_errors = On/display_errors = Off/" /etc/php7/php.ini \
+    && sed -i "s/post_max_size = 8M/post_max_size = 100M/" /etc/php7/php.ini \
+    && sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 100M/" /etc/php7/php.ini \
+    && sed -i "s/user = www-data/user = root/" /etc/php7/php-fpm.d/www.conf \
+    && sed -i "s/group = www-data/group = root/" /etc/php7/php-fpm.d/www.conf \
 # Supervisor conf
-RUN echo "[supervisord]" >> /etc/supervisor/supervisord.conf
-RUN echo "nodaemon = true" >> /etc/supervisor/supervisord.conf
-RUN echo "user = root" >> /etc/supervisor/supervisord.conf
+    && echo "[supervisord]" >> /etc/supervisord.conf \
+    && echo "nodaemon = true" >> /etc/supervisord.conf \
+    && echo "user = root" >> /etc/supervisord.conf \
+    && echo "[program:php-fpm7]" >> /etc/supervisord.conf \
+    && echo "command = /usr/sbin/php-fpm7 -FR" >> /etc/supervisord.conf \
+    && echo "autostart = true" >> /etc/supervisord.conf \
+    && echo "autorestart = true" >> /etc/supervisord.conf \
+    && echo "[program:nginx]" >> /etc/supervisord.conf \
+    && echo "command = /usr/sbin/nginx" >> /etc/supervisord.conf \
+    && echo "autostart = true" >> /etc/supervisord.conf \
+    && echo "autorestart = true" >> /etc/supervisord.conf \
+    && echo "[program:crond]" >> /etc/supervisord.conf \
+    && echo "command = crond -f" >> /etc/supervisord.conf \
+    && echo "autostart = true" >> /etc/supervisord.conf \
+    && echo "autorestart = true" >> /etc/supervisord.conf
 
-RUN echo "[program:php-fpm7.1]" >> /etc/supervisor/supervisord.conf
-RUN echo "command = /usr/sbin/php-fpm7.1 -FR" >> /etc/supervisor/supervisord.conf
-RUN echo "autostart = true" >> /etc/supervisor/supervisord.conf
-RUN echo "autorestart = true" >> /etc/supervisor/supervisord.conf
-
-RUN echo "[program:nginx]" >> /etc/supervisor/supervisord.conf
-RUN echo "command = /usr/sbin/nginx" >> /etc/supervisor/supervisord.conf
-RUN echo "autostart = true" >> /etc/supervisor/supervisord.conf
-RUN echo "autorestart = true" >> /etc/supervisor/supervisord.conf
-
-RUN echo "[program:cron]" >> /etc/supervisor/supervisord.conf
-RUN echo "command = cron -f" >> /etc/supervisor/supervisord.conf
-RUN echo "autostart = true" >> /etc/supervisor/supervisord.conf
-RUN echo "autorestart = true" >> /etc/supervisor/supervisord.conf
-
-
-# Install Zsh
-RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
-RUN sed -i "s/robbyrussell/af-magic/" ~/.zshrc
-RUN echo TERM=xterm >> /root/.zshrc
-
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Add certbot
-# https://certbot.eff.org/
-RUN wget -P /usr/sbin/ https://dl.eff.org/certbot-auto
-RUN chmod a+x /usr/sbin/certbot-auto
-
-RUN chown -R root:root /etc/cron.d
-RUN chmod -R 0644 /etc/cron.d
-
-CMD ["/usr/bin/supervisord"]
-
-RUN wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && dpkg -i /tmp/libpng12.deb && rm /tmp/libpng12.deb
-
-RUN wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb  && dpkg -i /tmp/libpng12.deb && rm /tmp/libpng12.deb
-
-# Install GS to downgrade pdf files
-RUN apt-get update && apt-get -y install ghostscript && apt-get clean
-RUN apt-get update && apt-get install nodejs -y && apt-get update -y && apt-get install npm -y && npm i -g n && n stable && npm i -g pm2 && npm install -g pngquant-bin
+CMD /usr/bin/supervisord
