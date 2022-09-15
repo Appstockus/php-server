@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:3.15
 
 RUN set -ex &&\
     apk update \
@@ -7,25 +7,25 @@ RUN set -ex &&\
     bash \
     supervisor \
     nginx \
-    py3-setuptools=51.3.3-r0\
-    php7=7.4.19-r0 \
-    php7-fpm=7.4.19-r0 \
-    php7-curl=7.4.19-r0 \
-    php7-zip=7.4.19-r0 \
-    php7-json=7.4.19-r0 \
-    php7-pgsql=7.4.19-r0 \
-    php7-phar=7.4.19-r0 \
-    php7-openssl=7.4.19-r0 \
-    php7-mbstring=7.4.19-r0 \
-    php7-gd=7.4.19-r0 \
-    php7-xml=7.4.19-r0 \
-    php7-simplexml=7.4.19-r0 \
-    php7-dom=7.4.19-r0 \
-    php7-xmlwriter=7.4.19-r0 \
-    php7-tokenizer=7.4.19-r0 \
-    php7-pdo_mysql=7.4.19-r0 \
-    php7-session=7.4.19-r0 \
-    php7-pecl-mailparse=3.1.1-r1 \
+    py3-setuptools=52.0.0-r4 \
+    php7=7.4.30-r0 \
+    php7-fpm=7.4.30-r0 \
+    php7-curl=7.4.30-r0 \
+    php7-zip=7.4.30-r0 \
+    php7-json=7.4.30-r0 \
+    php7-pgsql=7.4.30-r0 \
+    php7-phar=7.4.30-r0 \
+    php7-openssl=7.4.30-r0 \
+    php7-mbstring=7.4.30-r0 \
+    php7-gd=7.4.30-r0 \
+    php7-xml=7.4.30-r0 \
+    php7-simplexml=7.4.30-r0 \
+    php7-dom=7.4.30-r0 \
+    php7-xmlwriter=7.4.30-r0 \
+    php7-tokenizer=7.4.30-r0 \
+    php7-pdo_mysql=7.4.30-r0 \
+    php7-session=7.4.30-r0 \
+    php7-pecl-mailparse=3.1.3-r0 \
     && apk del \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
@@ -55,4 +55,4 @@ RUN mkdir -p /run/nginx \
     && echo "autostart = true" >> /etc/supervisord.conf \
     && echo "autorestart = true" >> /etc/supervisord.conf
 
-CMD /usr/bin/supervisord 
+CMD /usr/bin/supervisord
