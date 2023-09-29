@@ -1,46 +1,38 @@
-# Docker - alpine + nginx + php
+# PHP 8.2 CLI + RoadRunner
 
 Basic useful feature list:
 
- * alpine (3.15)
- * php-fpm (7.4.30)
- * supervisor
- * [composer](https://getcomposer.org/)
+- php-cli (8.2)
+- [RoadRunner](https://roadrunner.dev/)
+- [composer 2.6](https://getcomposer.org/)
 
 ## Example
 
-*docker-compose.yml*:
+`Dockerfile`
+
+```Dockerfile
+FROM 8.2-rr
+
+COPY .rr.yaml ./
+
+COPY composer.json composer.lock ./
+
+RUN composer install --no-dev --no-scripts --no-autoloader --no-progress --no-suggest --no-interaction
+
+COPY src ./src
+
+RUN composer dump-autoload --optimize --no-dev --classmap-authoritative
+
+```
+
+`docker-compose.yml`
 
 ```yaml
 ges:
-  platform: linux/amd64
-  image: leemp/php-server:${TAG_VERSION}
-  healthcheck:
-    test: "true"
+  image: leemp/php-server:8.2-rr
   build:
-    context: ./apps/ges
-    args:
-      VERSION: ${TAG_VERSION}
-      COMPOSER_INSTALL_DEV: 'true'
-  ports:
-    - "80:5000"
+    context: .
   env_file: ./.env
-  environment:
-    TZ: ${TZ:-Europe/London}
-    APP_DEBUG: 'true'
-    ENV_OVERLOAD: 'true'
-  command: bash -c '(apk add tzdata && cp /usr/share/zoneinfo/$TZ /etc/localtime && date) 
-    && ([[ -z "$SKIP_INIT" ]] && (
-      cd /var/www 
-      && composer install --no-progress -v
-      && npm install 
-    ) || true)
-      && cd / && /usr/bin/supervisord'
   volumes:
-    - ./apps/ges/www:/var/www/
-    - ./apps/ges/nginx-config:/etc/nginx/conf.d:ro
-    - ./apps/ges/logs/nginx:/var/log/nginx
-    - ./apps/ges/supervisor:/etc/supervisor.d:ro
-    - ./apps/ges/filebeat/filebeat.yml:/etc/filebeat.yml
-    - ./apps/ges/xdebug:/xdebug
+    - ./src/www:/home/app
 ```
