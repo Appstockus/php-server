@@ -26,7 +26,13 @@ env:
 
 jobs:
   build:
-
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm/v8
+          - linux/arm64
     runs-on: ubuntu-latest
     permissions:
       contents: read
