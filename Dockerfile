@@ -9,8 +9,8 @@ RUN set -ex &&\
     nginx \
     npm \
     py3-setuptools=52.0.0-r4 \
-    php7=7.4.30-r0 \
-    php7-fpm=7.4.30-r0 \
+    php7=7.4.33-r1 \
+    php7-fpm=7.4.33-r1 \
     php7-curl \
     php7-zip \
     php7-json \
