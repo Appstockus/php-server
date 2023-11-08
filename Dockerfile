@@ -16,7 +16,7 @@ RUN install-php-extensions \
         pdo_mysql pdo_pgsql \
     && rm -rf /tmp/* /var/cache/apk/* \
     && echo "grpc.enable_fork_support = 1" >> /usr/local/etc/php/conf.d/docker-php-ext-grpc.ini \
-    && echo "grpc.poll_strategy = epoll1" >> /usr/local/etc/php/conf.d/docker-php-ext-grpc.ini \
+    && echo "grpc.poll_strategy = epoll1" >> /usr/local/etc/php/conf.d/docker-php-ext-grpc.ini
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
