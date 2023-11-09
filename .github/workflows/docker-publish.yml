@@ -7,10 +7,10 @@ on:
         description: 'Test scenario tag (use canonical v.*.*.*)'
         required: true 
         type: string
-  push:
-    branches: [ "master" ]
+  # push:
+    # branches: [ "master" ]
     # Publish tags as releases
-    tags: [ 'v*.*' ]
+    # tags: [ 'v*.*' ]
 
 env:
   # Use docker.io for Docker Hub if empty
